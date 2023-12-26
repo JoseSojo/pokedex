@@ -23,14 +23,16 @@ function App() {
 
       const NewPkm = [] as POKEMON[];
 
-      resultPokemon.results.map(async (pk, i) => {
-        const pkm = await fetch(`${DexterService.GetUrl()}${pk.name}`);
-        const jsonPkm = await pkm.json();
-        NewPkm.push({...pk,img: jsonPkm.sprites.front_default})
-        if (i == resultPokemon.results.length-1) {
-          setList(NewPkm); 
-          setLoad(false);   
-        }           
+      resultPokemon.results.map((pk, i) => {
+        fetch(`${DexterService.GetUrl()}${pk.name}`)
+          .then(res => res.json())
+          .then(pkm => {
+            NewPkm.push({...pk,img: pkm.sprites.front_default})
+          if (i == resultPokemon.results.length-1) {
+            setList(NewPkm); 
+            setLoad(false);   
+          }  
+          })         
       })
 
      
